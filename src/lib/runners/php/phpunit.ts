@@ -24,6 +24,7 @@ export class PHPUnit extends AbstractRunner {
   }
 
   get command() {
+    // @TODO add config settings for this.
     return "vendor/bin/phpunit";
   }
 
