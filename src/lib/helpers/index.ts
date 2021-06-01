@@ -1,4 +1,6 @@
+import { readFile, readFileSync } from "fs";
 import * as vscode from "vscode";
+import * as findUp from "find-up";
 import { Cypress } from "../runners/javascript/cypress";
 import { Jest } from "../runners/javascript/jest";
 import { PHPUnit } from "../runners/php/phpunit";
@@ -50,14 +52,42 @@ export const getTestType = (document: vscode.TextDocument): string | false => {
   }
 };
 
-export const getJavaScriptTests = (_document: vscode.TextDocument) => {
-  // @TODO read package.json and determine which tests should be run; regex test for "mocha" or "jest"
-  // @TODO read the document being run to check for the string "cy."; if so, return "cypress"
-  return "jest";
+export const getJavaScriptTests = (document: vscode.TextDocument): string => {
+  const data = readFileSync(document.fileName, "utf8");
+  if (data.includes("cy.")) {
+    return "cypress";
+  }
+
+  const packageJsonFile = findUp.sync("package.json", {
+    cwd: document.fileName,
+  });
+
+  if (packageJsonFile) {
+    const packageData = readFileSync(packageJsonFile, "utf8");
+    if (packageData.includes("mocha")) {
+      return "mocha";
+    }
+
+    if (packageData.includes("jest")) {
+      return "jest";
+    }
+  }
+
+  return "";
 };
-export const getPHPTests = (_document: vscode.TextDocument) => {
-  // @TODO read composer.json to determine framework to return
-  return "phpunit";
+export const getPHPTests = (document: vscode.TextDocument): string => {
+  const composerJsonFile = findUp.sync("composer.json", {
+    cwd: document.fileName,
+  });
+
+  if (composerJsonFile) {
+    const data = readFileSync(composerJsonFile, "utf8");
+    if (data.includes("phpunit")) {
+      return "phpunit";
+    }
+  }
+
+  return "";
 };
 
 export const getTestCommand = (
