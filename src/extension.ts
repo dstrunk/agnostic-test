@@ -1,27 +1,83 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import { getTestCommand, loadLastTest } from "./lib/helpers";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+export const testType = ["focused", "file", "suite"] as const;
+const runTest = (testStrategy: typeof testType[number]) => {
+  const editor = vscode.window.activeTextEditor;
+
+  if (!editor) {
+    return vscode.window.showInformationMessage(
+      "VSCodeTest: No File Selected."
+    );
+  }
+
+  const document = editor?.document;
+
+  if (!document) {
+    return vscode.window.showInformationMessage(
+      "VSCodeTest: No File Selected."
+    );
+  }
+
+  const lineNumber = editor.selection.active.line;
+  const command = getTestCommand(document, lineNumber, testStrategy);
+
+  if (!command) {
+    return vscode.window.showInformationMessage("VSCodeTest: No test found.");
+  }
+
+  run(command);
+};
+
+const runPrevious = () => {
+  return loadLastTest() !== "" ? run(loadLastTest()) : false;
+};
+
+const run = (command: string) => {
+  let terminal = getOrCreateTerminal();
+  terminal.sendText(command);
+};
+
+const getOrCreateTerminal = () => {
+  const count = (<any>vscode.window).terminals.length;
+  if (count) {
+    const terminals = <vscode.Terminal[]>(<any>vscode.window).terminals;
+    return terminals[count - 1];
+  }
+
+  return vscode.window.createTerminal("vscode-test");
+};
+
 export function activate(context: vscode.ExtensionContext) {
+  let disposables = [];
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-test" is now active!');
+  disposables.push(
+    vscode.commands.registerCommand("vscode-test.runFocusedTest", () => {
+      runTest("focused");
+    })
+  );
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscode-test.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+  disposables.push(
+    vscode.commands.registerCommand("vscode-test.runTestFile", () => {
+      runTest("file");
+    })
+  );
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from vscode-test!');
-	});
+  disposables.push(
+    vscode.commands.registerCommand("vscode-test.runTestSuite", () => {
+      runTest("suite");
+    })
+  );
 
-	context.subscriptions.push(disposable);
+  disposables.push(
+    vscode.commands.registerCommand("vscode-test.runPreviousTest", () => {
+      runPrevious();
+    })
+  );
+
+  disposables.forEach((disposable) => {
+    context.subscriptions.push(disposable);
+  });
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
