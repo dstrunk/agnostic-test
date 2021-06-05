@@ -16,6 +16,41 @@ Agnostic Test is a spiritual brother to [test.vim][vim-test]. When I moved to VS
 - `Run test suite` - Run the full test suite
 - `Run previous test` - Run the previous test. Handy for TDD, when editing a file outside of your test file.
 
+## Keybindings
+
+Similar to VS Test, if you are looking for the functionality of vim.test and are using the Vim extension, add the following to your `settings.json` (I will use `<leader>` as a designation for your leader key; replace `<leader>` with your actual leader key):
+
+```json
+// ...
+"vim.normalModeKeyBindingsNonRecursive": [
+    {
+        "before": ["<leader>", "t"],
+        "commands": ["agnostic-test.runFocusedTest"]
+    },
+    {
+        "before": ["<leader>", "T"],
+        "commands": ["agnostic-test.runCurrentTestFile"]
+    },
+    {
+        "before": ["<leader>", "a"],
+        "commands": ["agnostic-test.runTestSuite"]
+    },
+    {
+        "before": ["<leader>", "g"],
+        "commands": ["agnostic-test.runPreviousTest"]
+    },
+],
+// ...
+```
+
+## Running in the commands manually
+
+If you are using the extension and do not want to set up keybindings, you will need to run the commands manually. To do so:
+
+- Press Ctrl + Shift + P
+- Begin a search for "Agnostic Test"
+- Select the desired command from the dropdown selection
+
 ## Currently Supported Testing Frameworks
 
 At the moment, the following languages are supported:
