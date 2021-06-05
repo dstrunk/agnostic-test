@@ -1,6 +1,6 @@
 {
-	"name": "vscode-test",
-	"displayName": "vscode-test",
+	"name": "agnostic-test",
+	"displayName": "agnostic-test",
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
@@ -10,29 +10,29 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:vscode-test.runFocusedTest",
-		"onCommand:vscode-test.runTestFile",
-		"onCommand:vscode-test.runTestSuite",
-		"onCommand:vscode-test.runPreviousTest"
+		"onCommand:agnostic-test.runFocusedTest",
+		"onCommand:agnostic-test.runTestFile",
+		"onCommand:agnostic-test.runTestSuite",
+		"onCommand:agnostic-test.runPreviousTest"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vscode-test.runFocusedTest",
-				"title": "VSCode Test: Run Focused Test"
+				"command": "agnostic-test.runFocusedTest",
+				"title": "Agnostic Test: Run Focused Test"
 			},
 			{
-				"command": "vscode-test.runTestFile",
-				"title": "VSCode Test: Run Test File"
+				"command": "agnostic-test.runTestFile",
+				"title": "Agnostic Test: Run Test File"
 			},
 			{
-				"command": "vscode-test.runTestSuite",
-				"title": "VSCode Test: Run Test Suite"
+				"command": "agnostic-test.runTestSuite",
+				"title": "Agnostic Test: Run Test Suite"
 			},
 			{
-				"command": "vscode-test.runPreviousTest",
-				"title": "VSCode Test: Run Previous Test"
+				"command": "agnostic-test.runPreviousTest",
+				"title": "Agnostic Test: Run Previous Test"
 			}
 		]
 	},

@@ -8,10 +8,10 @@ const runTest = (
 ) => {
   if (
     testStrategy === "last" &&
-    context.workspaceState.get("vscode-test.lastRunner")
+    context.workspaceState.get("agnostic-test.lastRunner")
   ) {
     const lastRunner: any = context.workspaceState.get(
-      "vscode-test.lastRunner"
+      "agnostic-test.lastRunner"
     );
     return lastRunner.run();
   }
@@ -20,7 +20,7 @@ const runTest = (
 
   if (!editor) {
     return vscode.window.showInformationMessage(
-      "VSCodeTest: No File Selected."
+      "Agnostic Test: No File Selected."
     );
   }
 
@@ -28,7 +28,7 @@ const runTest = (
 
   if (!document) {
     return vscode.window.showInformationMessage(
-      "VSCodeTest: No File Selected."
+      "Agnostic Test: No File Selected."
     );
   }
 
@@ -36,10 +36,12 @@ const runTest = (
   const runner = getTestRunner(document, lineNumber, testStrategy);
 
   if (!runner) {
-    return vscode.window.showInformationMessage("VSCodeTest: No test found.");
+    return vscode.window.showInformationMessage(
+      "Agnostic Test: No test found."
+    );
   }
 
-  context.workspaceState.update("vscode-test.lastRunner", runner);
+  context.workspaceState.update("agnostic-test.lastRunner", runner);
   setGlobalRunner(runner);
 
   return runner.run();
@@ -49,25 +51,25 @@ export function activate(context: vscode.ExtensionContext) {
   let disposables = [];
 
   disposables.push(
-    vscode.commands.registerCommand("vscode-test.runFocusedTest", () => {
+    vscode.commands.registerCommand("agnostic-test.runFocusedTest", () => {
       runTest("focused", context);
     })
   );
 
   disposables.push(
-    vscode.commands.registerCommand("vscode-test.runTestFile", () => {
+    vscode.commands.registerCommand("agnostic-test.runTestFile", () => {
       runTest("file", context);
     })
   );
 
   disposables.push(
-    vscode.commands.registerCommand("vscode-test.runTestSuite", () => {
+    vscode.commands.registerCommand("agnostic-test.runTestSuite", () => {
       runTest("suite", context);
     })
   );
 
   disposables.push(
-    vscode.commands.registerCommand("vscode-test.runPreviousTest", () => {
+    vscode.commands.registerCommand("agnostic-test.runPreviousTest", () => {
       runTest("last", context);
     })
   );

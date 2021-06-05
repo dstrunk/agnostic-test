@@ -70,6 +70,6 @@ export class AbstractRunner implements IRunner {
       return terminals[count - 1];
     }
 
-    return vscode.window.createTerminal("vscode-test");
+    return vscode.window.createTerminal("agnostic-test");
   }
 }

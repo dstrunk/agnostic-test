@@ -1,9 +1,9 @@
 {
-  "name": "vscode-test-cypress",
+  "name": "agnostic-test-cypress",
   "version": "1.0.0",
-  "description": "A test project for running vscode-tests in Cypress",
+  "description": "A test project for running agnostic-tests in Cypress",
   "main": "index.js",
-  "repository": "https://github.com/dstrunk/vscode-test",
+  "repository": "https://github.com/dstrunk/agnostic-test",
   "author": "Daniel Strunk",
   "license": "MIT",
   "private": true,

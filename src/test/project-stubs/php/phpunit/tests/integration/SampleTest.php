@@ -1,6 +1,6 @@
 <?php
 
-namespace VSCodeTest\Tests\Integration;
+namespace AgnosticTest\Tests\Integration;
 
 class SampleTest extends \PHPUnit\Framework\TestCase
 {

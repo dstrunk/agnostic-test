@@ -1,6 +1,6 @@
 {
-    "name": "vscode-test/phpunit",
-    "description": "A test project for running vscode-tests in PHPUnit",
+    "name": "agnostic-test/phpunit",
+    "description": "A test project for running agnostic-tests in PHPUnit",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -11,7 +11,7 @@
     ],
     "autoload": {
       "psr-4": {
-        "VSCodeTest\\Tests\\": "tests/"
+        "AgnosticTest\\Tests\\": "tests/"
       }
     },
     "require-dev": {
