@@ -1,70 +1,54 @@
-# vscode-test README
+# Agnostic Test
 
-This is the README for your extension "vscode-test". After writing up a brief description, we recommend including the following sections.
+Run tests in VSCode across different languages with Zero Configuration®.
 
-## Features
+Agnostic Test is a spiritual brother to [test.vim][vim-test]. When I moved to VS Code, I missed my zero-configuration test runner that allowed for swapping languages while maintaining the same key mappings for running tests.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+[VS Test][vs-test] is most similar to what I was looking for, but the project looked abandoned (and unpublished on the extensions directory), so Agnostic Test was born.
 
-For example if there is an image subfolder under your extension project workspace:
+[vim-test]: https://github.com/vim-test/vim-test
+[vs-test]: https://github.com/ignu/vs-test
 
-\!\[feature X\]\(images/feature-x.png\)
+## Commands
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- `Run test under cursor` - If you're in a test file, run the test under the cursor
+- `Run test file` - Run all tests within the file
+- `Run test suite` - Run the full test suite
+- `Run previous test` - Run the previous test. Handy for TDD, when editing a file outside of your test file.
+
+## Currently Supported Testing Frameworks
+
+At the moment, the following languages are supported:
+
+### PHP
+
+- PHPUnit
+
+### JavaScript
+
+- Cypress - If a test runner encounters the string `cy.` in the test file, it will run Cypress tests.
+- Jest
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+This extension does not have any dependencies; however, the framework you are utilizing for testing likely will. Please refer to the documentation for your test framework for installation within your project.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+At the moment, this extension has no configuration. In true opinionated fashion, it expects the happy path for the supported testing frameworks. Future versions of Agnostic Test may support user-specified test type overrides, binary path configuration, etc. Until then, for any of the currently supported testing frameworks, it expects the following:
 
-## Release Notes
+- Your VSCode workspace is the root of the project
+- Your dependencies are installed via a package manager (not globally)
+- Your file name, and secondly, your package manager's dependencies, are enough to determine the test being run
 
-Users appreciate release notes as you update your extension.
+### Runner-specific Issues
 
-### 1.0.0
+#### Cypress
 
-Initial release of ...
+- It is difficult to tell if an entire suite should be run with the Cypress runner. This _could_ be done by testing that the file path of the suite is in the `/cypress` folder, but I'm personally not a fan of that convention, and I think it's going a bit **too** far in the "convention over configuration" route.
 
-### 1.0.1
+## Prior Art
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- VS Test - https://github.com/ignu/vs-test
+- test.vim - https://github.com/vim-test/vim-test
+- Better PHPUnit - https://github.com/calebporzio/better-phpunit
