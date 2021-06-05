@@ -2,7 +2,7 @@
 
 Run tests in VSCode across different languages with Zero Configuration®.
 
-Agnostic Test is a spiritual brother to [test.vim][vim-test]. When I moved to VS Code, I missed my zero-configuration test runner that allowed for swapping languages while maintaining the same key mappings for running tests.
+Agnostic Test is a spiritual sibling to [test.vim][vim-test]. When I moved to VS Code, I missed my zero-configuration test runner that allowed for swapping languages while maintaining the same key mappings for running tests.
 
 [VS Test][vs-test] is most similar to what I was looking for, but the project looked abandoned (and unpublished on the extensions directory), so Agnostic Test was born.
 
@@ -14,7 +14,7 @@ Agnostic Test is a spiritual brother to [test.vim][vim-test]. When I moved to VS
 - `Run test under cursor` - If you're in a test file, run the test under the cursor
 - `Run test file` - Run all tests within the file
 - `Run test suite` - Run the full test suite
-- `Run previous test` - Run the previous test. Handy for TDD, when editing a file outside of your test file.
+- `Run previous test` - Run the previous test. Handy for TDD when editing a file outside of your test file.
 
 ## Keybindings
 
