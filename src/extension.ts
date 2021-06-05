@@ -1,8 +1,21 @@
 import * as vscode from "vscode";
-import { getTestCommand, loadLastTest } from "./lib/helpers";
+import { getTestRunner } from "./lib/helpers";
 
-export const testType = ["focused", "file", "suite"] as const;
-const runTest = (testStrategy: typeof testType[number]) => {
+export const testType = ["focused", "file", "suite", "last"] as const;
+const runTest = (
+  testStrategy: typeof testType[number],
+  context: vscode.ExtensionContext
+) => {
+  if (
+    testStrategy === "last" &&
+    context.workspaceState.get("vscode-test.lastRunner")
+  ) {
+    const lastRunner: any = context.workspaceState.get(
+      "vscode-test.lastRunner"
+    );
+    return lastRunner.run();
+  }
+
   const editor = vscode.window.activeTextEditor;
 
   if (!editor) {
@@ -20,32 +33,16 @@ const runTest = (testStrategy: typeof testType[number]) => {
   }
 
   const lineNumber = editor.selection.active.line;
-  const command = getTestCommand(document, lineNumber, testStrategy);
+  const runner = getTestRunner(document, lineNumber, testStrategy);
 
-  if (!command) {
+  if (!runner) {
     return vscode.window.showInformationMessage("VSCodeTest: No test found.");
   }
 
-  run(command);
-};
+  context.workspaceState.update("vscode-test.lastRunner", runner);
+  setGlobalRunner(runner);
 
-const runPrevious = () => {
-  return loadLastTest() !== "" ? run(loadLastTest()) : false;
-};
-
-const run = (command: string) => {
-  let terminal = getOrCreateTerminal();
-  terminal.sendText(command);
-};
-
-const getOrCreateTerminal = () => {
-  const count = (<any>vscode.window).terminals.length;
-  if (count) {
-    const terminals = <vscode.Terminal[]>(<any>vscode.window).terminals;
-    return terminals[count - 1];
-  }
-
-  return vscode.window.createTerminal("vscode-test");
+  return runner.run();
 };
 
 export function activate(context: vscode.ExtensionContext) {
@@ -53,25 +50,25 @@ export function activate(context: vscode.ExtensionContext) {
 
   disposables.push(
     vscode.commands.registerCommand("vscode-test.runFocusedTest", () => {
-      runTest("focused");
+      runTest("focused", context);
     })
   );
 
   disposables.push(
     vscode.commands.registerCommand("vscode-test.runTestFile", () => {
-      runTest("file");
+      runTest("file", context);
     })
   );
 
   disposables.push(
     vscode.commands.registerCommand("vscode-test.runTestSuite", () => {
-      runTest("suite");
+      runTest("suite", context);
     })
   );
 
   disposables.push(
     vscode.commands.registerCommand("vscode-test.runPreviousTest", () => {
-      runPrevious();
+      runTest("last", context);
     })
   );
 
@@ -81,3 +78,12 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
+
+var globalRunner: any;
+export function setGlobalRunner(runner: any) {
+  globalRunner = runner;
+}
+
+export function getGlobalRunner(): any {
+  return globalRunner;
+}

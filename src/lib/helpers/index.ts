@@ -1,4 +1,4 @@
-import { readFile, readFileSync } from "fs";
+import { readFileSync } from "fs";
 import * as vscode from "vscode";
 import * as findUp from "find-up";
 import { Cypress } from "../runners/javascript/cypress";
@@ -20,18 +20,6 @@ export const runners: Record<string, any> = {
   php: {
     phpunit: PHPUnit,
   },
-};
-
-let lastTest: string = "";
-export const saveLastTest = (testName: string): string => (lastTest = testName);
-export const loadLastTest = (): string => lastTest;
-export const remember = (callback: any) => {
-  const command = callback();
-  if (command) {
-    return saveLastTest(command);
-  } else {
-    return loadLastTest();
-  }
 };
 
 export const getTestType = (document: vscode.TextDocument): string | false => {
@@ -90,7 +78,14 @@ export const getPHPTests = (document: vscode.TextDocument): string => {
   return "";
 };
 
-export const getTestCommand = (
+/**
+ * Factory method to return one of the supported test runners in this extension.
+ * @param document The current document
+ * @param lineNumber the current cursor position
+ * @param testStrategy focused, file, suite or last
+ * @returns one of the supported runners
+ */
+export const getTestRunner = (
   document: vscode.TextDocument,
   lineNumber: number,
   testStrategy: typeof testType[number]
@@ -108,7 +103,5 @@ export const getTestCommand = (
     return null;
   }
 
-  const instance = new runner(document, lineNumber, testStrategy);
-
-  return remember(() => instance.run());
+  return new runner(document, lineNumber, testStrategy);
 };

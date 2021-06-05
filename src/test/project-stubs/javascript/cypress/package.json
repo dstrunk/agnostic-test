@@ -1,0 +1,13 @@
+{
+  "name": "vscode-test-cypress",
+  "version": "1.0.0",
+  "description": "A test project for running vscode-tests in Cypress",
+  "main": "index.js",
+  "repository": "https://github.com/dstrunk/vscode-test",
+  "author": "Daniel Strunk",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "cypress": "^7.4.0"
+  }
+}

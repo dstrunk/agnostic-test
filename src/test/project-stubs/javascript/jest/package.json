@@ -1,0 +1,16 @@
+{
+  "name": "vscode-test-jest",
+  "version": "1.0.0",
+  "description": "A test project for running vscode-tests with Jest",
+  "main": "index.js",
+  "repository": "https://github.com/dstrunk/vscode-test",
+  "author": "Daniel Strunk",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "jest": "^27.0.3"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}

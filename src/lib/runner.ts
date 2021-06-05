@@ -2,10 +2,10 @@ import * as vscode from "vscode";
 import { testType } from "../extension";
 
 export interface IRunner {
-  run: Function;
-  focusedTest: Function;
-  testFile: Function;
-  testSuite: Function;
+  run(): void;
+  focusedTest(): string;
+  testFile(): string;
+  testSuite(): string;
 }
 
 export interface RunnerOptions {
@@ -33,28 +33,43 @@ export class AbstractRunner implements IRunner {
     this.testStrategy = testStrategy;
   }
 
-  run() {
+  run(): void {
+    let terminal = this.getOrCreateTerminal();
+
     switch (this.testStrategy) {
       case "focused":
-        return this.focusedTest();
+        return terminal.sendText(this.focusedTest());
+
       case "file":
-        return this.testFile();
+        return terminal.sendText(this.testFile());
+
       case "suite":
-        return this.testSuite();
+        return terminal.sendText(this.testSuite());
+
       default:
-        return this.testSuite();
+        return terminal.sendText(this.testSuite());
     }
   }
 
-  focusedTest() {
+  focusedTest(): string {
     throw new TypeError("`focusedTest` should be implemented.");
   }
 
-  testFile() {
+  testFile(): string {
     throw new Error("`testFile` should be implemented.");
   }
 
-  testSuite() {
+  testSuite(): string {
     throw new Error("`testSuite` should be implemented.");
+  }
+
+  getOrCreateTerminal() {
+    const count = (<any>vscode.window).terminals.length;
+    if (count) {
+      const terminals = <vscode.Terminal[]>(<any>vscode.window).terminals;
+      return terminals[count - 1];
+    }
+
+    return vscode.window.createTerminal("vscode-test");
   }
 }

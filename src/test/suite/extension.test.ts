@@ -1,12 +1,11 @@
-import * as assert from "assert";
-import * as vscode from "vscode";
-import * as extension from "../../extension";
+export const waitToAssertInSeconds: number = 5;
 
-suite("Extension Test Suite", () => {
-  vscode.window.showInformationMessage("Start all tests.");
-
-  test("Sample test", () => {
-    assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-    assert.strictEqual(-1, [1, 2, 3].indexOf(0));
+// This is a little helper function to promisify setTimeout, so we can "await" setTimeout.
+export const timeout = (seconds: number, callback: CallableFunction) => {
+  return new Promise<void>((resolve) => {
+    setTimeout(() => {
+      callback();
+      resolve();
+    }, seconds * waitToAssertInSeconds);
   });
-});
+};
