@@ -64,6 +64,10 @@ At the moment, the following languages are supported:
 - Cypress - If a test runner encounters the string `cy.` in the test file, it will run Cypress tests.
 - Jest
 
+### Elixir
+
+- ExUnit
+
 ## Requirements
 
 This extension does not have any dependencies; however, the framework you are utilizing for testing likely will. Please refer to the documentation for your test framework for installation within your project.

@@ -5,6 +5,7 @@ import { Cypress } from "../runners/javascript/cypress";
 import { Jest } from "../runners/javascript/jest";
 import { PHPUnit } from "../runners/php/phpunit";
 import { testType } from "../../extension";
+import { ExUnit } from "../runners/elixir/exunit";
 
 export const runners: Record<string, any> = {
   javascript: {
@@ -20,6 +21,10 @@ export const runners: Record<string, any> = {
   php: {
     phpunit: PHPUnit,
   },
+
+  elixir: {
+    exunit: ExUnit,
+  },
 };
 
 export const getTestType = (document: vscode.TextDocument): string | false => {
@@ -32,6 +37,8 @@ export const getTestType = (document: vscode.TextDocument): string | false => {
       return getJavaScriptTests(document);
     case "php":
       return getPHPTests(document);
+    case "elixir":
+      return getElixirTests(document);
     default:
       vscode.window.showInformationMessage(
         `${languageId} is not currently supported.`
@@ -76,6 +83,10 @@ export const getPHPTests = (document: vscode.TextDocument): string => {
   }
 
   return "";
+};
+
+export const getElixirTests = (document: vscode.TextDocument): string => {
+  return "exunit";
 };
 
 /**
