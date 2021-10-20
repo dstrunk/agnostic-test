@@ -16,7 +16,7 @@ export class Jest extends AbstractRunner {
   }
 
   testFile() {
-    return `${this.command} -t "${this.fileName}"`;
+    return `${this.command} "${this.fileName}"`;
   }
 
   testSuite() {

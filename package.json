@@ -2,8 +2,18 @@
 	"name": "agnostic-test",
 	"displayName": "Agnostic Test",
 	"publisher": "silentpost",
-	"description": "",
-	"version": "0.0.1",
+	"description": "Run tests in VS Code across different languages with Zero Configuration®.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dstrunk/agnostic-test"
+  },
+  "author": {
+    "name": "Daniel Strunk",
+    "email": "daniel@strunk.me",
+    "url": "https://danielstrunk.me"
+  },
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.56.0"
 	},
