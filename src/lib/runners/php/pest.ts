@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { AbstractRunner } from "../../runner";
 import { testType } from "../../../extension";
 
-export class Jest extends AbstractRunner {
+export class Pest extends AbstractRunner {
   constructor(
     document: vscode.TextDocument,
     lineNumber: number,
@@ -12,11 +12,11 @@ export class Jest extends AbstractRunner {
   }
 
   focusedTest() {
-    return `${this.command} -- -i ${this.fileName} -t ${this.testName}`;
+    return `${this.command} --filter ${this.testName}`;
   }
 
   testFile() {
-    return `${this.command} "${this.fileName}"`;
+    return `${this.command} --filter '${this.fileName}'`;
   }
 
   testSuite() {
@@ -25,16 +25,16 @@ export class Jest extends AbstractRunner {
 
   get command() {
     // @TODO add config settings for this.
-    return "node_modules/.bin/jest";
+    return "vendor/bin/pest";
   }
 
   get fileName(): string {
-    const match = this.document.fileName.match(/\w+(?:\.\w+).*$/);
+    const match = this.document.fileName.match(/\w+(?:\.\w+).*$/m);
     if (!match) {
       return "";
     }
 
-    return match[0];
+    return match[0].replace(".php", "");
   }
 
   get testName(): string {
@@ -45,7 +45,8 @@ export class Jest extends AbstractRunner {
       const match = text.match(regex);
 
       if (match) {
-        return match[1].trim();
+        const testname = match[1];
+        return testname.trim();
       }
     }
 

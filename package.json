@@ -13,13 +13,14 @@
     "email": "daniel@strunk.me",
     "url": "https://danielstrunk.me"
   },
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.56.0"
 	},
 	"categories": [
-		"Other"
+		"Testing"
 	],
+  "icon": "images/icon.png",
 	"activationEvents": [
 		"onCommand:agnostic-test.runFocusedTest",
 		"onCommand:agnostic-test.runTestFile",

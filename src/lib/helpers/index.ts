@@ -4,6 +4,7 @@ import * as findUp from "find-up";
 import { Cypress } from "../runners/javascript/cypress";
 import { Jest } from "../runners/javascript/jest";
 import { PHPUnit } from "../runners/php/phpunit";
+import { Pest } from "../runners/php/pest";
 import { testType } from "../../extension";
 import { ExUnit } from "../runners/elixir/exunit";
 
@@ -20,6 +21,7 @@ export const runners: Record<string, any> = {
 
   php: {
     phpunit: PHPUnit,
+    pest: Pest,
   },
 
   elixir: {
@@ -77,6 +79,10 @@ export const getPHPTests = (document: vscode.TextDocument): string => {
 
   if (composerJsonFile) {
     const data = readFileSync(composerJsonFile, "utf8");
+    if (data.includes("pest")) {
+        return "pest";
+    }
+
     if (data.includes("phpunit")) {
       return "phpunit";
     }

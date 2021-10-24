@@ -58,6 +58,7 @@ At the moment, the following languages are supported:
 ### PHP
 
 - PHPUnit
+- Pest
 
 ### JavaScript
 

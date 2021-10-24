@@ -1,0 +1,21 @@
+{
+    "name": "agnostic-test/phpunit",
+    "description": "A test project for running agnostic-tests in PHPUnit",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Strunk",
+            "email": "daniel@strunk.me"
+        }
+    ],
+    "autoload": {
+      "psr-4": {
+        "AgnosticTest\\Tests\\": "tests/"
+      }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "pestphp/pest": "^1.20"
+    }
+}
