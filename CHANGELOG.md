@@ -2,6 +2,11 @@
 
 All notable changes to the "agnostic-test" extension will be documented in this file.
 
+## [0.1.1]
+### Fixed
+
+- Remove white background from icon
+
 ## [0.1.0]
 ### Added
 
