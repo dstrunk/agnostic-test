@@ -74,6 +74,14 @@
           "default": null,
           "description": "A custom JavaScript Jest command. Default command is `node_modules/.bin/jest`."
         },
+        "agnostic-test.javascript.mocha.command": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "A custom JavaScript Mocha command. Default command is `node_modules/.bin/mocha`."
+        },
         "agnostic-test.javascript.cypress.command": {
           "type": [
             "string",

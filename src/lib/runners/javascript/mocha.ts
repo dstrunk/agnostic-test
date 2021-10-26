@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { AbstractRunner } from "../../runner";
 import { testType } from "../../../extension";
 
-export class Cypress extends AbstractRunner {
+export class Mocha extends AbstractRunner {
   constructor(
     document: vscode.TextDocument,
     lineNumber: number,
@@ -12,24 +12,24 @@ export class Cypress extends AbstractRunner {
   }
 
   focusedTest() {
-    return `${this.command} run -- --record --spec "${this.testName}"`;
+    return `${this.command} -g ${this.testName}`;
   }
 
   testFile() {
-    return `${this.command} run -- --record --spec "${this.fileName}"`;
+    return `${this.command} ${this.fileName}`;
   }
 
   testSuite() {
-    return `${this.command} run -- --record`;
+    return `${this.command}`;
   }
 
   get command() {
-    let command = vscode.workspace.getConfiguration('agnostic-test').get('javascript.cypress.command');
+    let command = vscode.workspace.getConfiguration('agnostic-test').get('javascript.mocha.command');
     if (command) {
         return command;
     }
 
-    return "node_modules/.bin/cypress";
+    return "node_modules/.bin/mocha";
   }
 
   get fileName(): string {
@@ -45,7 +45,7 @@ export class Cypress extends AbstractRunner {
     for (let line = this.lineNumber; line >= 0; line--) {
       const { text } = this.document.lineAt(line);
 
-      const regex = /\bit ?\(["'](.+)["']/;
+      const regex = /^\s*(?:it|test)\(([^,)]+)/m;
       const match = text.match(regex);
 
       if (match) {

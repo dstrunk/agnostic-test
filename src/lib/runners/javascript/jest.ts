@@ -33,19 +33,19 @@ export class Jest extends AbstractRunner {
   }
 
   get fileName(): string {
-    const match = this.document.fileName.match(/\w+(?:\.\w+).*$/);
+    const match = this.document.uri.fsPath;
     if (!match) {
       return "";
     }
 
-    return match[0];
+    return match;
   }
 
   get testName(): string {
     for (let line = this.lineNumber; line >= 0; line--) {
       const { text } = this.document.lineAt(line);
 
-      const regex = /^\s*(?:it|test|get)\(([^,)]+)/m;
+      const regex = /^\s*(?:it)\(([^,)]+)/m;
       const match = text.match(regex);
 
       if (match) {

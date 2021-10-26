@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import * as findUp from "find-up";
 import { Cypress } from "../runners/javascript/cypress";
 import { Jest } from "../runners/javascript/jest";
+import { Mocha } from "../runners/javascript/mocha";
 import { PHPUnit } from "../runners/php/phpunit";
 import { Pest } from "../runners/php/pest";
 import { testType } from "../../extension";
@@ -12,6 +13,7 @@ export const runners: Record<string, any> = {
   javascript: {
     cypress: Cypress,
     jest: Jest,
+    mocha: Mocha,
   },
 
   typescript: {

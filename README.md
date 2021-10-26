@@ -54,6 +54,7 @@ Here are the currently available configuration options (settings should be added
     "agnostic-test.php.pest.command": null,
     "agnostic-test.php.phpunit.command": null,
     "agnostic-test.javascript.jest.command": null,
+    "agnostic-test.javascript.mocha.command": null,
     "agnostic-test.javascript.cypress.command": null,
     "agnostic-test.elixir.exunit.command": null
 }
@@ -82,6 +83,7 @@ At the moment, the following languages are supported:
 
 - Cypress - If a test runner encounters the string `cy.` in the test file, it will run Cypress tests.
 - Jest
+- Mocha
 
 ### Elixir
 
@@ -97,6 +99,7 @@ Although there are configuration options for Agnostic Test, there are still assu
 
 - Your VSCode workspace is the root of the project
 - Your file name, and secondly, your package manager's dependencies, are enough to determine the test being run
+- You are only using one testing framework for the same file type. So, for example: if you use both `Mocha` and `Jest` in a JavaScript project, Agnostic Test will have trouble distinguishing which test runner to use for any `.js` extensions.
 
 ### Runner-specific Issues
 

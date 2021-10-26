@@ -1,6 +1,8 @@
 import * as vscode from "vscode";
 import { getTestRunner } from "./lib/helpers";
 
+export let globalRunner: any;
+
 export const testType = ["focused", "file", "suite", "last"] as const;
 const runTest = (
   testStrategy: typeof testType[number],
@@ -13,6 +15,8 @@ const runTest = (
     const lastRunner: any = context.workspaceState.get(
       "agnostic-test.lastRunner"
     );
+
+    setGlobalRunner(lastRunner);
     return lastRunner.run();
   }
 
@@ -81,8 +85,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {}
 
-var globalRunner: any;
-export function setGlobalRunner(runner: any) {
+function setGlobalRunner(runner: any) {
   globalRunner = runner;
 }
 
