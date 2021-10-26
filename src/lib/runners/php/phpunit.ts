@@ -24,7 +24,11 @@ export class PHPUnit extends AbstractRunner {
   }
 
   get command() {
-    // @TODO add config settings for this.
+    let command = vscode.workspace.getConfiguration('agnostic-test').get('php.phpunit.command');
+    if (command) {
+        return command;
+    }
+
     return "vendor/bin/phpunit";
   }
 

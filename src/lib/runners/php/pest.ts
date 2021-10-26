@@ -24,7 +24,11 @@ export class Pest extends AbstractRunner {
   }
 
   get command() {
-    // @TODO add config settings for this.
+    let command = vscode.workspace.getConfiguration('agnostic-test').get('php.pest.command');
+    if (command) {
+        return command;
+    }
+
     return "vendor/bin/pest";
   }
 

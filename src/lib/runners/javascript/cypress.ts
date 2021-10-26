@@ -24,7 +24,11 @@ export class Cypress extends AbstractRunner {
   }
 
   get command() {
-    // @TODO add config settings for this.
+    let command = vscode.workspace.getConfiguration('agnostic-test').get('javascript.cypress.command');
+    if (command) {
+        return command;
+    }
+
     return "node_modules/.bin/cypress";
   }
 

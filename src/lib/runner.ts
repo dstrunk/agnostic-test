@@ -38,15 +38,23 @@ export class AbstractRunner implements IRunner {
 
     switch (this.testStrategy) {
       case "focused":
+        vscode.commands.executeCommand('workbench.action.terminal.clear');
+        terminal.show();
         return terminal.sendText(this.focusedTest());
 
       case "file":
+        vscode.commands.executeCommand('workbench.action.terminal.clear');
+        terminal.show();
         return terminal.sendText(this.testFile());
 
       case "suite":
+        vscode.commands.executeCommand('workbench.action.terminal.clear');
+        terminal.show();
         return terminal.sendText(this.testSuite());
 
       default:
+        vscode.commands.executeCommand('workbench.action.terminal.clear');
+        terminal.show();
         return terminal.sendText(this.testSuite());
     }
   }

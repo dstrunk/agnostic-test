@@ -43,6 +43,22 @@ Similar to VS Test, if you are looking for the functionality of vim.test and are
 // ...
 ```
 
+## Configuration
+
+You can customize the commands run for specific test runners. This is handy if, for instance, you would like to run a global test runner instead of a project-specific instance installed via a package manager.
+
+Here are the currently available configuration options (settings should be added to your editor's `settings.json` file):
+
+```json
+{
+    "agnostic-test.php.pest.command": null,
+    "agnostic-test.php.phpunit.command": null,
+    "agnostic-test.javascript.jest.command": null,
+    "agnostic-test.javascript.cypress.command": null,
+    "agnostic-test.elixir.exunit.command": null
+}
+```
+
 ## Running in the commands manually
 
 If you are using the extension and do not want to set up keybindings, you will need to run the commands manually. To do so:
@@ -52,6 +68,8 @@ If you are using the extension and do not want to set up keybindings, you will n
 - Select the desired command from the dropdown selection
 
 ## Currently Supported Testing Frameworks
+
+Pull requests are welcome for new languages or frameworks. Due to limited familiarity with other languages, it is preferred that any new language support also comes with test coverage.
 
 At the moment, the following languages are supported:
 
@@ -73,12 +91,11 @@ At the moment, the following languages are supported:
 
 This extension does not have any dependencies; however, the framework you are utilizing for testing likely will. Please refer to the documentation for your test framework for installation within your project.
 
-## Known Issues
+## Expectations
 
-At the moment, this extension has no configuration. In true opinionated fashion, it expects the happy path for the supported testing frameworks. Future versions of Agnostic Test may support user-specified test type overrides, binary path configuration, etc. Until then, for any of the currently supported testing frameworks, it expects the following:
+Although there are configuration options for Agnostic Test, there are still assumptions it makes when running test commands in your project. It expects:
 
 - Your VSCode workspace is the root of the project
-- Your dependencies are installed via a package manager (not globally)
 - Your file name, and secondly, your package manager's dependencies, are enough to determine the test being run
 
 ### Runner-specific Issues

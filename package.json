@@ -1,8 +1,8 @@
 {
-	"name": "agnostic-test",
-	"displayName": "Agnostic Test",
-	"publisher": "silentpost",
-	"description": "Run tests in VS Code across different languages with Zero Configuration®.",
+  "name": "agnostic-test",
+  "displayName": "Agnostic Test",
+  "publisher": "silentpost",
+  "description": "Run tests in VS Code across different languages with Zero Configuration®.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,67 +13,112 @@
     "email": "daniel@strunk.me",
     "url": "https://danielstrunk.me"
   },
-	"version": "0.1.1",
-	"engines": {
-		"vscode": "^1.56.0"
-	},
-	"categories": [
-		"Testing"
-	],
+  "version": "0.2.0",
+  "engines": {
+    "vscode": "^1.56.0"
+  },
+  "categories": [
+    "Testing"
+  ],
   "icon": "images/icon.png",
-	"activationEvents": [
-		"onCommand:agnostic-test.runFocusedTest",
-		"onCommand:agnostic-test.runTestFile",
-		"onCommand:agnostic-test.runTestSuite",
-		"onCommand:agnostic-test.runPreviousTest"
-	],
-	"main": "./dist/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "agnostic-test.runFocusedTest",
-				"title": "Agnostic Test: Run Focused Test"
-			},
-			{
-				"command": "agnostic-test.runTestFile",
-				"title": "Agnostic Test: Run Test File"
-			},
-			{
-				"command": "agnostic-test.runTestSuite",
-				"title": "Agnostic Test: Run Test Suite"
-			},
-			{
-				"command": "agnostic-test.runPreviousTest",
-				"title": "Agnostic Test: Run Previous Test"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "yarn run package",
-		"compile": "webpack",
-		"watch": "webpack --watch",
-		"package": "webpack --mode production --devtool hidden-source-map",
-		"test-compile": "tsc -p ./",
-		"test-watch": "tsc -watch -p ./",
-		"pretest": "yarn run test-compile && yarn run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.0.4",
-		"@types/node": "^12.11.7",
-		"@types/vscode": "^1.56.0",
-		"@typescript-eslint/eslint-plugin": "^4.14.1",
-		"@typescript-eslint/parser": "^4.14.1",
-		"eslint": "^7.19.0",
-		"find-up": "^5.0.0",
-		"glob": "^7.1.6",
-		"mocha": "^8.2.1",
-		"ts-loader": "^8.0.14",
-		"typescript": "^4.1.3",
-		"vscode-test": "^1.5.0",
-		"webpack": "^5.19.0",
-		"webpack-cli": "^4.4.0"
-	}
+  "activationEvents": [
+    "onCommand:agnostic-test.runFocusedTest",
+    "onCommand:agnostic-test.runTestFile",
+    "onCommand:agnostic-test.runTestSuite",
+    "onCommand:agnostic-test.runPreviousTest"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "agnostic-test.runFocusedTest",
+        "title": "Agnostic Test: Run Focused Test"
+      },
+      {
+        "command": "agnostic-test.runTestFile",
+        "title": "Agnostic Test: Run Test File"
+      },
+      {
+        "command": "agnostic-test.runTestSuite",
+        "title": "Agnostic Test: Run Test Suite"
+      },
+      {
+        "command": "agnostic-test.runPreviousTest",
+        "title": "Agnostic Test: Run Previous Test"
+      }
+    ],
+    "configuration": {
+      "title": "Agnostic Test configuration",
+      "properties": {
+        "agnostic-test.php.pest.command": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "A custom PHP Pest command. Default command is `vendor/bin/pest`."
+        },
+        "agnostic-test.php.phpunit.command": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "A custom PHP PHPUnit command. Default command is `vendor/bin/phpunit`."
+        },
+        "agnostic-test.javascript.jest.command": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "A custom JavaScript Jest command. Default command is `node_modules/.bin/jest`."
+        },
+        "agnostic-test.javascript.cypress.command": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "A custom JavaScript Cypress command. Default command is `node_modules/.bin/cypress`."
+        },
+        "agnostic-test.elixir.exunit.command": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "A custom Elixir ExUnit command. Default command is `mix test`."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "test-compile": "tsc -p ./",
+    "test-watch": "tsc -watch -p ./",
+    "pretest": "yarn run test-compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.0.4",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.56.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "eslint": "^7.19.0",
+    "find-up": "^5.0.0",
+    "glob": "^7.1.6",
+    "mocha": "^8.2.1",
+    "ts-loader": "^8.0.14",
+    "typescript": "^4.1.3",
+    "vscode-test": "^1.5.0",
+    "webpack": "^5.19.0",
+    "webpack-cli": "^4.4.0"
+  }
 }
