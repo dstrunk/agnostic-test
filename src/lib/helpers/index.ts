@@ -19,6 +19,13 @@ export const runners: Record<string, any> = {
   typescript: {
     cypress: Cypress,
     jest: Jest,
+    mocha: Mocha,
+  },
+
+  typescriptreact: {
+    cypress: Cypress,
+    jest: Jest,
+    mocha: Mocha,
   },
 
   php: {
@@ -35,14 +42,17 @@ export const getTestType = (document: vscode.TextDocument): string | false => {
   const { languageId } = document;
 
   switch (languageId) {
+    case "typescriptreact":
     case "typescript":
-      return getJavaScriptTests(document);
     case "javascript":
       return getJavaScriptTests(document);
+
     case "php":
       return getPHPTests(document);
+
     case "elixir":
       return getElixirTests(document);
+
     default:
       vscode.window.showInformationMessage(
         `${languageId} is not currently supported.`
