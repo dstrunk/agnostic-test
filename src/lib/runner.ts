@@ -1,3 +1,4 @@
+import { readFileSync } from "fs";
 import * as vscode from "vscode";
 import { testType } from "../extension";
 
@@ -12,25 +13,48 @@ export interface RunnerOptions {
   document: vscode.TextDocument;
   lineNumber: number;
   testStrategy: typeof testType[number];
+  localConfig?: vscode.TextDocument;
+}
+
+export interface LocalConfig {
+    php?: {
+        pest?: {
+            command?: string;
+        }
+        phpunit?: {
+            command?: string;
+        }
+    }
+
+    javascript?: {
+        jest?: {
+            command?: string;
+        }
+        mocha?: {
+            command?: string;
+        }
+        cypress?: {
+            command?: string;
+        }
+    }
+
+    elixir?: {
+        exunit?: {
+            command?: string;
+        }
+    }
 }
 
 export class AbstractRunner implements IRunner {
-  document: vscode.TextDocument;
-  lineNumber: number;
-  testStrategy: string;
-
   constructor(
-    document: vscode.TextDocument,
-    lineNumber: number,
-    testStrategy: typeof testType[number]
+    protected document: vscode.TextDocument,
+    protected lineNumber: number,
+    protected testStrategy: typeof testType[number],
+    protected localConfig?: LocalConfig,
   ) {
     if (new.target === AbstractRunner) {
       throw new TypeError("Cannot construct AbstractRunner instance directly.");
     }
-
-    this.document = document;
-    this.lineNumber = lineNumber;
-    this.testStrategy = testStrategy;
   }
 
   run(): void {

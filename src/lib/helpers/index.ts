@@ -103,7 +103,7 @@ export const getPHPTests = (document: vscode.TextDocument): string => {
   return "";
 };
 
-export const getElixirTests = (document: vscode.TextDocument): string => {
+export const getElixirTests = (_document: vscode.TextDocument): string => {
   return "exunit";
 };
 
@@ -132,5 +132,14 @@ export const getTestRunner = (
     return null;
   }
 
-  return new runner(document, lineNumber, testStrategy);
+  const localConfig = findUp.sync(".testrc.json", {
+    cwd: document.fileName,
+  });
+
+  if (localConfig) {
+    const data = JSON.parse(readFileSync(localConfig, "utf8"));
+    return new runner(document, lineNumber, testStrategy, data);
+  } else {
+    return new runner(document, lineNumber, testStrategy);
+  }
 };

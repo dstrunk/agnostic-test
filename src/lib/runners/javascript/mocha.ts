@@ -1,14 +1,15 @@
 import * as vscode from "vscode";
-import { AbstractRunner } from "../../runner";
+import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class Mocha extends AbstractRunner {
   constructor(
     document: vscode.TextDocument,
     lineNumber: number,
-    testStrategy: typeof testType[number]
+    testStrategy: typeof testType[number],
+    localConfig?: LocalConfig,
   ) {
-    super(document, lineNumber, testStrategy);
+    super(document, lineNumber, testStrategy, localConfig);
   }
 
   focusedTest() {
@@ -24,7 +25,16 @@ export class Mocha extends AbstractRunner {
   }
 
   get command() {
-    let command = vscode.workspace.getConfiguration('agnostic-test').get('javascript.mocha.command');
+    let command;
+    if (this.localConfig) {
+      command = this.localConfig?.javascript?.mocha?.command;
+
+      if (command) {
+        return command;
+      }
+    }
+
+    command = vscode.workspace.getConfiguration('agnostic-test').get('javascript.mocha.command');
     if (command) {
         return command;
     }

@@ -1,14 +1,15 @@
 import * as vscode from "vscode";
-import { AbstractRunner } from "../../runner";
+import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class Pest extends AbstractRunner {
   constructor(
     document: vscode.TextDocument,
     lineNumber: number,
-    testStrategy: typeof testType[number]
+    testStrategy: typeof testType[number],
+    localConfig?: LocalConfig,
   ) {
-    super(document, lineNumber, testStrategy);
+    super(document, lineNumber, testStrategy, localConfig);
   }
 
   focusedTest() {
@@ -24,7 +25,16 @@ export class Pest extends AbstractRunner {
   }
 
   get command() {
-    let command = vscode.workspace.getConfiguration('agnostic-test').get('php.pest.command');
+    let command;
+    if (this.localConfig) {
+      command = this.localConfig?.php?.pest?.command;
+
+      if (command) {
+        return command;
+      }
+    }
+
+    command = vscode.workspace.getConfiguration('agnostic-test').get('php.pest.command');
     if (command) {
         return command;
     }

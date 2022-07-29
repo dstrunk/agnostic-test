@@ -43,7 +43,7 @@ Similar to VS Test, if you are looking for the functionality of vim.test and are
 // ...
 ```
 
-## Configuration
+## Global configuration
 
 You can customize the commands run for specific test runners. This is handy if, for instance, you would like to run a global test runner instead of a project-specific instance installed via a package manager.
 
@@ -59,6 +59,50 @@ Here are the currently available configuration options (settings should be added
     "agnostic-test.elixir.exunit.command": null
 }
 ```
+
+### Project-specific configuration
+
+For some projects, you may wish to have a different configuration that does not interfere with your global configuration. For example, projects using Docker may need additional configuration to get your test runner working within a Docker container.
+
+In cases such as these, a project-specific configuration can be used to overload global configuration defaults.
+
+Create a `.testrc.json` file in the root of your directory with the following contents:
+
+```json
+{
+    "php": {
+        "pest": {
+            "command": null
+        },
+        "phpunit": {
+            "command": null
+        }
+    },
+
+    "javascript": {
+        "jest": {
+            "command": null
+        },
+        "mocha": {
+            "command": null
+        },
+        "cypress": {
+            "command": null
+        }
+    },
+
+    "elixir": {
+        "exunit": {
+            "command": null
+        }
+    }
+}
+```
+
+Notes for this file:
+
+* Add this file your `.gitignore`
+* Any languages that you do not use can be omitted
 
 ## Running in the commands manually
 

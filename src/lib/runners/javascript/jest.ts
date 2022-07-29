@@ -1,14 +1,15 @@
 import * as vscode from "vscode";
-import { AbstractRunner } from "../../runner";
+import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class Jest extends AbstractRunner {
   constructor(
-    document: vscode.TextDocument,
-    lineNumber: number,
-    testStrategy: typeof testType[number]
+    protected document: vscode.TextDocument,
+    protected lineNumber: number,
+    protected testStrategy: typeof testType[number],
+    protected localConfig?: LocalConfig,
   ) {
-    super(document, lineNumber, testStrategy);
+    super(document, lineNumber, testStrategy, localConfig);
   }
 
   focusedTest() {
@@ -24,9 +25,20 @@ export class Jest extends AbstractRunner {
   }
 
   get command() {
-    let command = vscode.workspace.getConfiguration('agnostic-test').get('javascript.jest.command');
-    if (command) {
+    let command;
+    if (this.localConfig) {
+      command = this.localConfig?.javascript?.jest?.command;
+
+      if (command) {
         return command;
+      }
+    }
+
+    command = vscode.workspace
+      .getConfiguration("agnostic-test")
+      .get("javascript.jest.command");
+    if (command) {
+      return command;
     }
 
     return "node_modules/.bin/jest";
