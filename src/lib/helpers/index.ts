@@ -90,13 +90,14 @@ export const getPHPTests = (document: vscode.TextDocument): string => {
   });
 
   if (composerJsonFile) {
-    const data = readFileSync(composerJsonFile, "utf8");
-    if (data.includes("pest")) {
+    const data = JSON.parse(readFileSync(composerJsonFile, "utf8"));
+
+    if (Object.keys(data['require-dev']).some((entry: string) => entry.includes('pest'))) {
         return "pest";
     }
 
-    if (data.includes("phpunit")) {
-      return "phpunit";
+    if (Object.keys(data['require-dev']).some((entry: string) => entry.includes('phpunit'))) {
+        return "phpunit";
     }
   }
 
