@@ -2,6 +2,11 @@
 
 All notable changes to the "agnostic-test" extension will be documented in this file.
 
+## [0.4.0]
+### Enhancement
+
+- Instead of a testing `composer.json` to search for _any_ string that includes "pest", parse the JSON and check the `require-dev` key directly. This assumes a project has the pest (or PHPUnit) package installed as a dev dependency, but this is a solid convention.
+
 ## [0.1.1]
 ### Fixed
 
