@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as path from "path";
 import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
@@ -13,11 +14,11 @@ export class ExUnit extends AbstractRunner {
   }
 
   focusedTest() {
-    return `${this.command} ${this.fileName}:${this.lineNumber}`;
+    return `${this.command} --only ${this.fileName}:${this.lineNumber}`;
   }
 
   testFile() {
-    return `${this.command} ${this.fileName}`;
+    return `${this.command} --only ${this.fileName}`;
   }
 
   testSuite() {
@@ -43,7 +44,14 @@ export class ExUnit extends AbstractRunner {
   }
 
   get fileName(): string {
-    return this.document.fileName;
+    const fullPath = this.document.fileName;
+    const workspaceFolder = vscode.workspace.getWorkspaceFolder(this.document.uri);
+
+    if (workspaceFolder) {
+        return path.relative(workspaceFolder.uri.fsPath, fullPath);
+    }
+
+    return fullPath;
   }
 
   get testName(): string {
