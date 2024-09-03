@@ -25,18 +25,10 @@ export class Jest extends AbstractRunner {
   }
 
   get command() {
-    let command;
-    if (this.localConfig) {
-      command = this.localConfig?.javascript?.jest?.command;
+    const command = this.localConfig?.javascript?.jest?.command
+      ?? vscode.workspace.getConfiguration("agnostic-test").get("javascript.jest.command")
+      ?? null;
 
-      if (command) {
-        return command;
-      }
-    }
-
-    command = vscode.workspace
-      .getConfiguration("agnostic-test")
-      .get("javascript.jest.command");
     if (command) {
       return command;
     }

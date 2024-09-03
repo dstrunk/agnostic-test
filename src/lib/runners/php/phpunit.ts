@@ -25,16 +25,10 @@ export class PHPUnit extends AbstractRunner {
   }
 
   get command() {
-    let command;
-    if (this.localConfig) {
-      command = this.localConfig?.php?.phpunit?.command;
+    const command = this.localConfig?.php?.phpunit?.command
+      ?? vscode.workspace.getConfiguration('agnostic-test').get('php.phpunit.command')
+      ?? null;
 
-      if (command) {
-        return command;
-      }
-    }
-
-    command = vscode.workspace.getConfiguration('agnostic-test').get('php.phpunit.command');
     if (command) {
         return command;
     }

@@ -56,7 +56,8 @@ Here are the currently available configuration options (settings should be added
     "agnostic-test.javascript.jest.command": null,
     "agnostic-test.javascript.mocha.command": null,
     "agnostic-test.javascript.cypress.command": null,
-    "agnostic-test.elixir.exunit.command": null
+    "agnostic-test.elixir.exunit.command": null,
+    "agnostic-test.elixir.exunit.docker.rootDirectory": null
 }
 ```
 
@@ -93,7 +94,10 @@ Create a `.testrc.json` file in the root of your directory with the following co
 
     "elixir": {
         "exunit": {
-            "command": null
+            "command": null,
+            "docker": {
+                "rootDirectory": null,
+            }
         }
     }
 }

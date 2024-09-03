@@ -13,7 +13,7 @@
     "email": "daniel@strunk.me",
     "url": "https://danielstrunk.me"
   },
-  "version": "0.5.0",
+  "version": "0.6.0",
   "engines": {
     "vscode": "^1.69.0"
   },
@@ -97,6 +97,14 @@
           ],
           "default": null,
           "description": "A custom Elixir ExUnit command. Default command is `mix test`."
+        },
+        "agnostic-test.elixir.exunit.docker.rootDirectory": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "If the Elixir project is part of a Docker Compose project, and the command is running in a Docker container, provide the root directory of your Elixir application here."
         }
       }
     }

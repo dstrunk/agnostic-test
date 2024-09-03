@@ -25,16 +25,10 @@ export class Mocha extends AbstractRunner {
   }
 
   get command() {
-    let command;
-    if (this.localConfig) {
-      command = this.localConfig?.javascript?.mocha?.command;
+    const command = this.localConfig?.javascript?.mocha?.command
+      ?? vscode.workspace.getConfiguration('agnostic-test').get('javascript.mocha.command')
+      ?? null;
 
-      if (command) {
-        return command;
-      }
-    }
-
-    command = vscode.workspace.getConfiguration('agnostic-test').get('javascript.mocha.command');
     if (command) {
         return command;
     }
