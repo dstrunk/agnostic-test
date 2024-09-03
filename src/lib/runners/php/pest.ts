@@ -25,16 +25,10 @@ export class Pest extends AbstractRunner {
   }
 
   get command() {
-    let command;
-    if (this.localConfig) {
-      command = this.localConfig?.php?.pest?.command;
+    const command = this.localConfig?.php?.pest?.command
+      ?? vscode.workspace.getConfiguration('agnostic-test').get('php.pest.command')
+      ?? null;
 
-      if (command) {
-        return command;
-      }
-    }
-
-    command = vscode.workspace.getConfiguration('agnostic-test').get('php.pest.command');
     if (command) {
         return command;
     }

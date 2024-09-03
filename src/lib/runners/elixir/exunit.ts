@@ -14,11 +14,11 @@ export class ExUnit extends AbstractRunner {
   }
 
   focusedTest() {
-    return `${this.command} --only ${this.fileName}:${this.lineNumber}`;
+    return `${this.command} ${this.fileName}:${this.lineNumber}`;
   }
 
   testFile() {
-    return `${this.command} --only ${this.fileName}`;
+    return `${this.command} ${this.fileName}`;
   }
 
   testSuite() {
@@ -26,18 +26,12 @@ export class ExUnit extends AbstractRunner {
   }
 
   get command() {
-    let command;
-    if (this.localConfig) {
-      command = this.localConfig?.elixir?.exunit?.command;
+    const command = this.localConfig?.elixir?.exunit?.command
+      ?? vscode.workspace.getConfiguration('agnostic-test').get('elixir.exunit.command')
+      ?? null;
 
-      if (command) {
-        return command;
-      }
-    }
-
-    command = vscode.workspace.getConfiguration('agnostic-test').get('elixir.exunit.command');
     if (command) {
-        return command;
+      return command;
     }
 
     return "mix test";
@@ -46,28 +40,33 @@ export class ExUnit extends AbstractRunner {
   get fileName(): string {
     const fullPath = this.document.fileName;
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(this.document.uri);
+    let rootDirectory = this.localConfig?.elixir?.exunit?.docker?.rootDirectory
+      ?? vscode.workspace.getConfiguration('agnostic-test').get('elixir.exunit.docker.rootDirectory')
+      ?? null;
 
-    if (workspaceFolder) {
-        return path.relative(workspaceFolder.uri.fsPath, fullPath);
-    }
+    if (rootDirectory && workspaceFolder) {
+      // If a root directory is provided (Docker is enabled)
+      const normalizedFullPath = path.normalize(fullPath);
 
-    return fullPath;
-  }
+      // Handle relative paths by resolving them against the workspace folder
+      if (!path.isAbsolute(rootDirectory)) {
+       rootDirectory = path.resolve(workspaceFolder.uri.fsPath, rootDirectory);
+      }
 
-  get testName(): string {
-    for (let line = this.lineNumber; line >= 0; line--) {
-      const { text } = this.document.lineAt(line);
-
-      const regex =
-        /^\s*(?:public|private|protected)?\s*function\s*(\w+)\s*\(.*$/;
-      const match = text.match(regex);
-
-      if (match) {
-        const testname = match[1];
-        return testname.trim();
+      const normalizedRootDirectory = path.normalize(rootDirectory);
+      if (normalizedFullPath.startsWith(normalizedRootDirectory)) {
+        return normalizedFullPath.slice(normalizedRootDirectory.length).replace(/^[/\\]+/, '');
+      } else {
+        // If the full path doesn't start with the root directory,
+        // fall back to using the workspace folder as the base
+        return path.relative(workspaceFolder.uri.fsPath, normalizedFullPath);
       }
     }
 
-    return "";
+    if (workspaceFolder) {
+      return path.relative(workspaceFolder.uri.fsPath, fullPath);
+    }
+
+    return fullPath;
   }
 }

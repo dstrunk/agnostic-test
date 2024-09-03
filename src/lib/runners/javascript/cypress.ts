@@ -25,16 +25,10 @@ export class Cypress extends AbstractRunner {
   }
 
   get command() {
-    let command;
-    if (this.localConfig) {
-      command = this.localConfig?.javascript?.cypress?.command;
+    const command = this.localConfig?.javascript?.cypress?.command
+      ?? vscode.workspace.getConfiguration('agnostic-test').get('javascript.cypress.command')
+      ?? null;
 
-      if (command) {
-        return command;
-      }
-    }
-
-    command = vscode.workspace.getConfiguration('agnostic-test').get('javascript.cypress.command');
     if (command) {
         return command;
     }

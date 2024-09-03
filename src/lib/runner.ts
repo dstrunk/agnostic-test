@@ -41,6 +41,9 @@ export interface LocalConfig {
     elixir?: {
         exunit?: {
             command?: string;
+            docker?: {
+                rootDirectory?: string;
+            }
         }
     }
 }
