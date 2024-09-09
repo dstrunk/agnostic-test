@@ -30,6 +30,9 @@ export interface LocalConfig {
         jest?: {
             command?: string;
         }
+        vitest?: {
+            command?: string;
+        }
         mocha?: {
             command?: string;
         }

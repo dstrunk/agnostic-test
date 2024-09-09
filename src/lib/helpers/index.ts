@@ -8,23 +8,27 @@ import { PHPUnit } from "../runners/php/phpunit";
 import { Pest } from "../runners/php/pest";
 import { testType } from "../../extension";
 import { ExUnit } from "../runners/elixir/exunit";
+import { Vitest } from "../runners/javascript/vitest";
 
 export const runners: Record<string, any> = {
   javascript: {
     cypress: Cypress,
     jest: Jest,
+    vitest: Vitest,
     mocha: Mocha,
   },
 
   typescript: {
     cypress: Cypress,
     jest: Jest,
+    vitest: Vitest,
     mocha: Mocha,
   },
 
   typescriptreact: {
     cypress: Cypress,
     jest: Jest,
+    vitest: Vitest,
     mocha: Mocha,
   },
 
@@ -77,6 +81,10 @@ export const getJavaScriptTests = (document: vscode.TextDocument): string => {
       return "mocha";
     }
 
+    if (packageData.includes("vitest")) {
+        return "vitest";
+    }
+
     if (packageData.includes("jest")) {
       return "jest";
     }
@@ -84,6 +92,7 @@ export const getJavaScriptTests = (document: vscode.TextDocument): string => {
 
   return "";
 };
+
 export const getPHPTests = (document: vscode.TextDocument): string => {
   const composerJsonFile = findUp.sync("composer.json", {
     cwd: document.fileName,
