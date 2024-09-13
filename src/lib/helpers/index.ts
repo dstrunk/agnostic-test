@@ -9,7 +9,7 @@ import { Pest } from "@runners/php/pest";
 import { testType } from "@src/extension";
 import { ExUnit } from "@runners/elixir/exunit";
 import { Vitest } from "@runners/javascript/vitest";
-import { AbstractRunner } from "../runner";
+import { AbstractRunner, LocalConfig } from "../runner";
 
 export const runners: Record<string, any> = {
     javascript: {
@@ -137,7 +137,8 @@ export const getTestRunner = (
         return null;
     }
 
-    const runner: typeof AbstractRunner | undefined = runners[languageId][framework];
+    type AbstractRunnerConstructor = new (document: vscode.TextDocument, lineNumber: number, testStrategy: typeof testType[number], config?: LocalConfig) => AbstractRunner;
+    const runner: AbstractRunnerConstructor | undefined = runners[languageId][framework];
 
     if (!runner) {
         return null;
