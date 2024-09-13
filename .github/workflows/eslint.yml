@@ -14,5 +14,5 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '20'
-    - run: yarn ci
-    - run: yarn eslint
+    - run: npm ci
+    - run: npm run eslint
