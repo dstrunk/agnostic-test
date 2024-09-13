@@ -2,6 +2,14 @@
 
 All notable changes to the "agnostic-test" extension will be documented in this file.
 
+## [1.0.0]
+
+Officially calling it ... 1.0.0 :confetti:
+
+### Enhancement
+
+- After running tests, return focus to the previous window so users can continue editing code.
+
 ## [0.8.1]
 ### Fixed
 - Issue where custom commands were not running as expected.

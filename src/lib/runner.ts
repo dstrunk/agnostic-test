@@ -55,29 +55,44 @@ export abstract class AbstractRunner implements IRunner {
         }
     }
 
-    run(): void {
+    async run(): Promise<void> {
         const terminal = this.getOrCreateTerminal();
+        const editor = vscode.window.activeTextEditor;
+        const position = editor?.selection.active;
 
         switch (this.testStrategy) {
         case "focused":
-            // vscode.commands.executeCommand('workbench.action.terminal.clear');
+            vscode.commands.executeCommand('workbench.action.terminal.clear');
             terminal.show();
-            return terminal.sendText(this.focusedTest());
+            terminal.sendText(this.focusedTest());
+            break;
 
         case "file":
             vscode.commands.executeCommand('workbench.action.terminal.clear');
             terminal.show();
-            return terminal.sendText(this.testFile());
+            terminal.sendText(this.testFile());
+            break;
 
         case "suite":
             vscode.commands.executeCommand('workbench.action.terminal.clear');
             terminal.show();
-            return terminal.sendText(this.testSuite());
+            terminal.sendText(this.testSuite());
+            break;
 
         default:
             vscode.commands.executeCommand('workbench.action.terminal.clear');
             terminal.show();
-            return terminal.sendText(this.testSuite());
+            terminal.sendText(this.testSuite());
+            break;
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        if (editor && position) {
+            await vscode.window.showTextDocument(editor.document, {
+                selection: new vscode.Selection(position, position),
+                preserveFocus: false,
+            });
         }
     }
 
