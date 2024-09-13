@@ -3,6 +3,8 @@ import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class Vitest extends AbstractRunner {
+    protected testRunnerType: string = 'vitest';
+
     constructor(
         protected document: vscode.TextDocument,
         protected lineNumber: number,
@@ -22,6 +24,10 @@ export class Vitest extends AbstractRunner {
 
     testSuite() {
         return `${this.command}`;
+    }
+
+    get runnerName() {
+        return 'vitest';
     }
 
     get command() {

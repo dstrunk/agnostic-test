@@ -3,6 +3,8 @@ import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class PHPUnit extends AbstractRunner {
+    protected testRunnerType: string = 'phpunit';
+
     constructor(
         document: vscode.TextDocument,
         lineNumber: number,

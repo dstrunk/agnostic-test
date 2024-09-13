@@ -2,6 +2,10 @@
 
 All notable changes to the "agnostic-test" extension will be documented in this file.
 
+## [0.8.1]
+### Fixed
+- Issue where custom commands were not running as expected.
+
 ## [0.8.0]
 ### Enhancement
 

@@ -3,6 +3,8 @@ import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class Mocha extends AbstractRunner {
+    protected testRunnerType: string = 'mocha';
+
     constructor(
         document: vscode.TextDocument,
         lineNumber: number,

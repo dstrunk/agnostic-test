@@ -41,7 +41,9 @@ export interface LocalConfig {
     }
 }
 
-export class AbstractRunner implements IRunner {
+export abstract class AbstractRunner implements IRunner {
+    protected abstract testRunnerType: string;
+
     constructor(
         protected document: vscode.TextDocument,
         protected lineNumber: number,
@@ -58,7 +60,7 @@ export class AbstractRunner implements IRunner {
 
         switch (this.testStrategy) {
         case "focused":
-            vscode.commands.executeCommand('workbench.action.terminal.clear');
+            // vscode.commands.executeCommand('workbench.action.terminal.clear');
             terminal.show();
             return terminal.sendText(this.focusedTest());
 
@@ -91,45 +93,46 @@ export class AbstractRunner implements IRunner {
         throw new Error("`testSuite` should be implemented.");
     }
 
-    get fileName(): string {
-        const fullPath = this.document.fileName;
-        const workspaceFolder = vscode.workspace.getWorkspaceFolder(this.document.uri);
-        const language = this.#languageFromDocument;
-        const testRunner = this.#testRunnerFromClassName;
+    get fileName() {
+        const fullPath = this?.document?.fileName;
+        const workspaceFolder = vscode?.workspace?.getWorkspaceFolder(this?.document?.uri);
+        const language = this._languageFromDocument;
+        const testRunner = this._testRunnerFromType;
 
         let rootDirectory: string | null = null;
-        if (this.localConfig && this.#isValidLanguage(language) && this.#isValidTestRunner(language, testRunner)) {
-            rootDirectory = (this.localConfig as any)?.[language]?.[testRunner]?.docker?.rootDirectory
-                ?? vscode.workspace.getConfiguration('agnostic-test').get(`${language}.${testRunner}.docker.rootDirectory`);
+        if (this?.localConfig && this._isValidLanguage(language) && this._isValidTestRunner(language, testRunner)) {
+            rootDirectory = (this?.localConfig as any)?.[language]?.[testRunner]?.docker?.rootDirectory
+                    ?? vscode.workspace.getConfiguration('agnostic-test').get(`${language}.${testRunner}.docker.rootDirectory`)
+                    ?? null;
         }
 
         if (rootDirectory && workspaceFolder) {
-            // If a root directory is provided (Docker is enabled)
             const normalizedFullPath = path.normalize(fullPath);
 
-            // Handle relative paths by resolving them against the workspace folder
             if (!path.isAbsolute(rootDirectory)) {
-                rootDirectory = path.resolve(workspaceFolder.uri.fsPath, rootDirectory);
+                rootDirectory = path.resolve(workspaceFolder?.uri?.fsPath, rootDirectory);
             }
 
             const normalizedRootDirectory = path.normalize(rootDirectory);
+
             if (normalizedFullPath.startsWith(normalizedRootDirectory)) {
-                return normalizedFullPath.slice(normalizedRootDirectory.length).replace(/^[/\\]+/, '');
+                const result = normalizedFullPath.slice(normalizedRootDirectory.length).replace(/^[/\\]+/, '');
+                return result;
             } else {
-                // If the full path doesn't start with the root directory,
-                // fall back to using the workspace folder as the base
-                return path.relative(workspaceFolder.uri.fsPath, normalizedFullPath);
+                const result = path.relative(workspaceFolder?.uri?.fsPath, normalizedFullPath);
+                return result;
             }
         }
 
         if (workspaceFolder) {
-            return path.relative(workspaceFolder.uri.fsPath, fullPath);
+            const result = path.relative(workspaceFolder?.uri?.fsPath, fullPath);
+            return result;
         }
 
         return fullPath;
     }
 
-    get #languageFromDocument(): string {
+    get _languageFromDocument(): string {
         const { languageId } = this.document;
         switch (languageId) {
         case 'typescriptreact':
@@ -148,32 +151,29 @@ export class AbstractRunner implements IRunner {
         }
     }
 
-    get #testRunnerFromClassName(): string {
-        const className = this.constructor.name.toLowerCase();
-        switch (className) {
-        case 'exunit':
-            return 'exunit';
+    get _testRunnerFromType(): string {
+        const validTestRunners = [
+            'exunit',
+            'jest',
+            'vitest',
+            'mocha',
+            'cypress',
+            'phpunit',
+            'pest',
+        ];
 
-        case 'jest':
-        case 'vitest':
-        case 'mocha':
-        case 'cypress':
-            return `${className}`;
-
-        case 'pest':
-        case 'phpunit':
-            return `${className}`;
-
-        default:
-            throw new Error(`Unsupported runner class: ${className}`);
+        if (!validTestRunners.includes(this.testRunnerType)) {
+            throw new Error('Unsupported test runner.');
         }
+
+        return this.testRunnerType;
     }
 
-    #isValidLanguage(lang: string): lang is keyof LocalConfig {
+    _isValidLanguage(lang: string): lang is keyof LocalConfig {
         return ['php', 'javascript', 'elixir'].includes(lang);
     }
 
-    #isValidTestRunner(lang: keyof LocalConfig, runner: string): runner is keyof LocalConfig[typeof lang] {
+    _isValidTestRunner(lang: keyof LocalConfig, runner: string): runner is keyof LocalConfig[typeof lang] {
         const runners: Record<keyof LocalConfig, string[]> = {
             php: ['pest', 'phpunit'],
             javascript: ['jest', 'vitest', 'mocha', 'cypress'],

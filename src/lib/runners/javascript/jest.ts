@@ -3,6 +3,8 @@ import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class Jest extends AbstractRunner {
+    protected testRunnerType: string = 'jest';
+
     constructor(
     protected document: vscode.TextDocument,
     protected lineNumber: number,

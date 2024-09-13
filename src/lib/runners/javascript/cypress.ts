@@ -3,6 +3,8 @@ import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class Cypress extends AbstractRunner {
+    protected testRunnerType: string = 'cypress';
+
     constructor(
         document: vscode.TextDocument,
         lineNumber: number,

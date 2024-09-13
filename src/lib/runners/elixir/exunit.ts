@@ -3,6 +3,8 @@ import { AbstractRunner, LocalConfig } from "@lib/runner";
 import { testType } from "@src/extension";
 
 export class ExUnit extends AbstractRunner {
+    protected testRunnerType: string = 'exunit';
+
     constructor(
         document: vscode.TextDocument,
         lineNumber: number,
@@ -26,8 +28,8 @@ export class ExUnit extends AbstractRunner {
 
     get command() {
         const command = this.localConfig?.elixir?.exunit?.command
-      ?? vscode.workspace.getConfiguration('agnostic-test').get('elixir.exunit.command')
-      ?? null;
+            ?? vscode.workspace.getConfiguration('agnostic-test').get('elixir.exunit.command')
+            ?? null;
 
         if (command) {
             return command;

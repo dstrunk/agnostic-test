@@ -3,6 +3,8 @@ import { AbstractRunner, LocalConfig } from "../../runner";
 import { testType } from "../../../extension";
 
 export class Pest extends AbstractRunner {
+    protected testRunnerType: string = 'pest';
+
     constructor(
         document: vscode.TextDocument,
         lineNumber: number,

@@ -9,6 +9,7 @@ import { Pest } from "@runners/php/pest";
 import { testType } from "@src/extension";
 import { ExUnit } from "@runners/elixir/exunit";
 import { Vitest } from "@runners/javascript/vitest";
+import { AbstractRunner } from "../runner";
 
 export const runners: Record<string, any> = {
     javascript: {
@@ -136,7 +137,7 @@ export const getTestRunner = (
         return null;
     }
 
-    const runner = runners[languageId][framework];
+    const runner: typeof AbstractRunner | undefined = runners[languageId][framework];
 
     if (!runner) {
         return null;
