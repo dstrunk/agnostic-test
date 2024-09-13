@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as findUp from 'find-up';
-import { getTestType, getJavaScriptTests, getPHPTests, getElixirTests, getTestRunner } from './index';
-import { Cypress } from '../runners/javascript/cypress';
-import { Jest } from '../runners/javascript/jest';
-import { Mocha } from '../runners/javascript/mocha';
-import { Vitest } from '../runners/javascript/vitest';
-import { PHPUnit } from '../runners/php/phpunit';
-import { Pest } from '../runners/php/pest';
-import { ExUnit } from '../runners/elixir/exunit';
+import { getTestType, getJavaScriptTests, getPHPTests, getTestRunner } from '@lib/helpers/index';
+import { Cypress } from '@lib/runners/javascript/cypress';
+import { Jest } from '@lib/runners/javascript/jest';
+import { Mocha } from '@lib/runners/javascript/mocha';
+import { Vitest } from '@lib/runners/javascript/vitest';
+import { PHPUnit } from '@lib/runners/php/phpunit';
+import { Pest } from '@lib/runners/php/pest';
+import { ExUnit } from '@lib/runners/elixir/exunit';
 
 jest.mock('vscode');
 jest.mock('fs');

@@ -2,12 +2,28 @@
 
 All notable changes to the "agnostic-test" extension will be documented in this file.
 
+## [0.8.0]
+### Enhancement
+
+- Docker configs for every test runner; if a `docker.rootDirectory` exists for the test runner, Agnostic Test will remove the directory from the test command when running the command. Best used in conjunction with `[runner].command`. See the README for more information.
+
+### Changed
+
+- All test runners now use a relative directory if one can be parsed, with fallbacks to full paths if a relative directory cannot be used.
+- Version bumps across the board to bring this project up-to-date
+- ESLint GitHub Workflow
+
+
 ## [0.7.0]
 ### Enhancement
 
 - Vitest support
 - Add past `CHANGELOG.md` entries before they leave my brain forever
 - Add tests :confetti:
+
+### Added
+
+- Test GitHub Workflow
 
 ## [0.6.1]
 ### Fixed

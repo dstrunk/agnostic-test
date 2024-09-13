@@ -58,6 +58,14 @@
           "default": null,
           "description": "A custom PHP Pest command. Default command is `vendor/bin/pest`."
         },
+        "agnostic-test.php.pest.docker.rootDirectory": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "If the PHP project is part of a Docker Compose project, and the command is running in a Docker container, provide the root directory of your PHP application here."
+        },
         "agnostic-test.php.phpunit.command": {
           "type": [
             "string",
@@ -65,6 +73,14 @@
           ],
           "default": null,
           "description": "A custom PHP PHPUnit command. Default command is `vendor/bin/phpunit`."
+        },
+        "agnostic-test.php.phpunit.docker.rootDirectory": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "If the PHP project is part of a Docker Compose project, and the command is running in a Docker container, provide the root directory of your PHP application here."
         },
         "agnostic-test.javascript.jest.command": {
           "type": [
@@ -74,6 +90,14 @@
           "default": null,
           "description": "A custom JavaScript Jest command. Default command is `node_modules/.bin/jest`."
         },
+        "agnostic-test.javascript.jest.docker.rootDirectory": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "If the JavaScript project is part of a Docker Compose project, and the command is running in a Docker container, provide the root directory of your JavaScript application here."
+        },
         "agnostic-test.javascript.vitest.command": {
           "type": [
             "string",
@@ -81,6 +105,14 @@
           ],
           "default": null,
           "description": "A custom JavaScript Vitest command. Default command is `node_modules/.bin/vitest`."
+        },
+        "agnostic-test.javascript.vitest.docker.rootDirectory": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "If the JavaScript project is part of a Docker Compose project, and the command is running in a Docker container, provide the root directory of your JavaScript application here."
         },
         "agnostic-test.javascript.mocha.command": {
           "type": [
@@ -90,6 +122,14 @@
           "default": null,
           "description": "A custom JavaScript Mocha command. Default command is `node_modules/.bin/mocha`."
         },
+        "agnostic-test.javascript.mocha.docker.rootDirectory": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "If the JavaScript project is part of a Docker Compose project, and the command is running in a Docker container, provide the root directory of your JavaScript application here."
+        },
         "agnostic-test.javascript.cypress.command": {
           "type": [
             "string",
@@ -97,6 +137,14 @@
           ],
           "default": null,
           "description": "A custom JavaScript Cypress command. Default command is `node_modules/.bin/cypress`."
+        },
+        "agnostic-test.javascript.cypress.docker.rootDirectory": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "If the JavaScript project is part of a Docker Compose project, and the command is running in a Docker container, provide the root directory of your JavaScript application here."
         },
         "agnostic-test.elixir.exunit.command": {
           "type": [
@@ -123,24 +171,29 @@
     "esbuild": "yarn esbuild-base --sourcemap",
     "esbuild-watch": "yarn esbuild-base --sourcemap --watch",
     "test-compile": "tsc -p ./",
-    "test": "jest"
+    "test": "jest",
+    "eslint": "eslint ."
   },
   "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/glob": "^7.1.3",
     "@types/jest": "^29.5.12",
     "@types/mocha": "^8.0.4",
     "@types/node": "^12.11.7",
     "@types/vscode": "^1.56.0",
-    "@typescript-eslint/eslint-plugin": "^4.14.1",
-    "@typescript-eslint/parser": "^4.14.1",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
     "esbuild": "^0.14.51",
-    "eslint": "^7.19.0",
+    "eslint": "^9.10.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "find-up": "^5.0.0",
     "glob": "^7.1.6",
     "jest": "^29.7.0",
-    "mocha": "^8.2.1",
     "ts-jest": "^29.2.5",
     "ts-loader": "^8.0.14",
-    "typescript": "^4.1.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.5.0"
   }
 }

@@ -1,11 +1,11 @@
-name: Test
+name: ESLint
 
 on:
   pull_request:
     branches: [ main ]
 
 jobs:
-  test:
+  eslint:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,4 +15,4 @@ jobs:
       with:
         node-version: '20'
     - run: npm ci
-    - run: npm run test
+    - run: npm run eslint

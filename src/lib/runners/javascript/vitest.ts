@@ -13,11 +13,11 @@ export class Vitest extends AbstractRunner {
     }
 
     focusedTest() {
-        return `${this.command} ${this.fileName} -t "${this.testName}"`;
+        return `${this.command} "${this.fileName}" -t "${this.testName}"`;
     }
 
     testFile() {
-        return `${this.command} ${this.fileName}`;
+        return `${this.command} "${this.fileName}"`;
     }
 
     testSuite() {
@@ -33,16 +33,7 @@ export class Vitest extends AbstractRunner {
             return command;
         }
 
-        return "node_modules/.bin/vitest";
-    }
-
-    get fileName(): string {
-        const match = this.document.uri.fsPath;
-        if (!match) {
-            return "";
-        }
-
-        return match;
+        return "node_modules/.bin/vitest run";
     }
 
     get testName(): string {

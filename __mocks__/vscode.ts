@@ -5,11 +5,14 @@ const vscode = {
     },
     workspace: {
         getConfiguration: jest.fn(),
+        getWorkspaceFolder: jest.fn(),
     },
     commands: {
         executeCommand: jest.fn(),
     },
-    // Add any other VS Code API elements that you use in your code
+    uri: {
+        file: jest.fn((f) => ({ fsPath: f })),
+    },
 };
 
 module.exports = vscode;

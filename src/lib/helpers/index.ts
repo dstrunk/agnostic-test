@@ -1,120 +1,120 @@
 import { readFileSync } from "fs";
 import * as vscode from "vscode";
 import * as findUp from "find-up";
-import { Cypress } from "../runners/javascript/cypress";
-import { Jest } from "../runners/javascript/jest";
-import { Mocha } from "../runners/javascript/mocha";
-import { PHPUnit } from "../runners/php/phpunit";
-import { Pest } from "../runners/php/pest";
-import { testType } from "../../extension";
-import { ExUnit } from "../runners/elixir/exunit";
-import { Vitest } from "../runners/javascript/vitest";
+import { Cypress } from "@runners/javascript/cypress";
+import { Jest } from "@runners/javascript/jest";
+import { Mocha } from "@runners/javascript/mocha";
+import { PHPUnit } from "@runners/php/phpunit";
+import { Pest } from "@runners/php/pest";
+import { testType } from "@src/extension";
+import { ExUnit } from "@runners/elixir/exunit";
+import { Vitest } from "@runners/javascript/vitest";
 
 export const runners: Record<string, any> = {
-  javascript: {
-    cypress: Cypress,
-    jest: Jest,
-    vitest: Vitest,
-    mocha: Mocha,
-  },
+    javascript: {
+        cypress: Cypress,
+        jest: Jest,
+        vitest: Vitest,
+        mocha: Mocha,
+    },
 
-  typescript: {
-    cypress: Cypress,
-    jest: Jest,
-    vitest: Vitest,
-    mocha: Mocha,
-  },
+    typescript: {
+        cypress: Cypress,
+        jest: Jest,
+        vitest: Vitest,
+        mocha: Mocha,
+    },
 
-  typescriptreact: {
-    cypress: Cypress,
-    jest: Jest,
-    vitest: Vitest,
-    mocha: Mocha,
-  },
+    typescriptreact: {
+        cypress: Cypress,
+        jest: Jest,
+        vitest: Vitest,
+        mocha: Mocha,
+    },
 
-  php: {
-    phpunit: PHPUnit,
-    pest: Pest,
-  },
+    php: {
+        phpunit: PHPUnit,
+        pest: Pest,
+    },
 
-  elixir: {
-    exunit: ExUnit,
-  },
+    elixir: {
+        exunit: ExUnit,
+    },
 };
 
 export const getTestType = (document: vscode.TextDocument): string | false => {
-  const { languageId } = document;
+    const { languageId } = document;
 
-  switch (languageId) {
+    switch (languageId) {
     case "typescriptreact":
     case "typescript":
     case "javascript":
-      return getJavaScriptTests(document);
+        return getJavaScriptTests(document);
 
     case "php":
-      return getPHPTests(document);
+        return getPHPTests(document);
 
     case "elixir":
-      return getElixirTests(document);
+        return getElixirTests(document);
 
     default:
-      vscode.window.showInformationMessage(
-        `${languageId} is not currently supported.`
-      );
-      return false;
-  }
+        vscode.window.showInformationMessage(
+            `${languageId} is not currently supported.`
+        );
+        return false;
+    }
 };
 
 export const getJavaScriptTests = (document: vscode.TextDocument): string => {
-  const data = readFileSync(document.fileName, "utf8");
-  if (data.includes("cy.")) {
-    return "cypress";
-  }
-
-  const packageJsonFile = findUp.sync("package.json", {
-    cwd: document.fileName,
-  });
-
-  if (packageJsonFile) {
-    const packageData = readFileSync(packageJsonFile, "utf8");
-    if (packageData.includes("mocha")) {
-      return "mocha";
+    const data = readFileSync(document.fileName, "utf8");
+    if (data.includes("cy.")) {
+        return "cypress";
     }
 
-    if (packageData.includes("vitest")) {
-        return "vitest";
+    const packageJsonFile = findUp.sync("package.json", {
+        cwd: document.fileName,
+    });
+
+    if (packageJsonFile) {
+        const packageData = readFileSync(packageJsonFile, "utf8");
+        if (packageData.includes("mocha")) {
+            return "mocha";
+        }
+
+        if (packageData.includes("vitest")) {
+            return "vitest";
+        }
+
+        if (packageData.includes("jest")) {
+            return "jest";
+        }
     }
 
-    if (packageData.includes("jest")) {
-      return "jest";
-    }
-  }
-
-  return "";
+    return "";
 };
 
 export const getPHPTests = (document: vscode.TextDocument): string => {
-  const composerJsonFile = findUp.sync("composer.json", {
-    cwd: document.fileName,
-  });
+    const composerJsonFile = findUp.sync("composer.json", {
+        cwd: document.fileName,
+    });
 
-  if (composerJsonFile) {
-    const data = JSON.parse(readFileSync(composerJsonFile, "utf8"));
+    if (composerJsonFile) {
+        const data = JSON.parse(readFileSync(composerJsonFile, "utf8"));
 
-    if (Object.keys(data['require-dev']).some((entry: string) => entry.includes('pest'))) {
-        return "pest";
+        if (Object.keys(data['require-dev']).some((entry: string) => entry.includes('pest'))) {
+            return "pest";
+        }
+
+        if (Object.keys(data['require-dev']).some((entry: string) => entry.includes('phpunit'))) {
+            return "phpunit";
+        }
     }
 
-    if (Object.keys(data['require-dev']).some((entry: string) => entry.includes('phpunit'))) {
-        return "phpunit";
-    }
-  }
-
-  return "";
+    return "";
 };
 
 export const getElixirTests = (_document: vscode.TextDocument): string => {
-  return "exunit";
+    return "exunit";
 };
 
 /**
@@ -125,31 +125,31 @@ export const getElixirTests = (_document: vscode.TextDocument): string => {
  * @returns one of the supported runners
  */
 export const getTestRunner = (
-  document: vscode.TextDocument,
-  lineNumber: number,
-  testStrategy: typeof testType[number]
+    document: vscode.TextDocument,
+    lineNumber: number,
+    testStrategy: typeof testType[number]
 ) => {
-  const { languageId } = document;
-  const framework = getTestType(document);
+    const { languageId } = document;
+    const framework = getTestType(document);
 
-  if (!framework) {
-    return null;
-  }
+    if (!framework) {
+        return null;
+    }
 
-  const runner = runners[languageId][framework];
+    const runner = runners[languageId][framework];
 
-  if (!runner) {
-    return null;
-  }
+    if (!runner) {
+        return null;
+    }
 
-  const localConfig = findUp.sync(".testrc.json", {
-    cwd: document.fileName,
-  });
+    const localConfig = findUp.sync(".testrc.json", {
+        cwd: document.fileName,
+    });
 
-  if (localConfig) {
-    const data = JSON.parse(readFileSync(localConfig, "utf8"));
-    return new runner(document, lineNumber, testStrategy, data);
-  } else {
-    return new runner(document, lineNumber, testStrategy);
-  }
+    if (localConfig) {
+        const data = JSON.parse(readFileSync(localConfig, "utf8"));
+        return new runner(document, lineNumber, testStrategy, data);
+    } else {
+        return new runner(document, lineNumber, testStrategy);
+    }
 };
